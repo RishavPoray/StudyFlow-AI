@@ -1,30 +1,184 @@
-# StudyFlow AI
+# 📚 StudyFlow AI
 
-A local-only study assistant prototype. Upload a PDF, extract text, detect topics, generate a study plan, take a quiz, and see your weak areas.
+> **An AI-powered study assistant that turns your study material into a personalized learning workflow.**
 
-## Stack
-- **Frontend**: React + Vite (port 5173)
-- **Backend**: FastAPI + Python (port 8000)
-- **PDF extraction**: pypdf
+StudyFlow AI analyzes uploaded academic PDFs, identifies the important topics, creates a personalized study plan, and generates conceptual quizzes to help students prepare more effectively.
 
----
+## ✨ Features
 
-## Quick Start
+* 📄 **PDF Upload & Text Extraction**
 
-### 1 — Backend
+  * Upload academic PDF study material.
+  * Extracts text and page information automatically.
+
+* 🧠 **AI Topic Detection**
+
+  * Identifies the subject and important topics from the uploaded document.
+  * Works across different academic subjects.
+
+* 📅 **Personalized Study Plan**
+
+  * Generates a study schedule based on topics, available study time, and exam date.
+  * Organizes learning, practice, and revision.
+
+* 📝 **AI Quiz Generation**
+
+  * Creates conceptual multiple-choice questions.
+  * Provides four answer options and evaluates the user's answers.
+
+* 🎯 **Quiz Results**
+
+  * Shows score and performance after completing the quiz.
+
+* 💻 **Local AI**
+
+  * Uses Ollama with `llama3.2:3b`.
+  * No paid AI API is required.
+
+## 🏗️ Architecture
+
+```text
+                    ┌─────────────────────┐
+                    │      Student        │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │   React Frontend    │
+                    │      Vite UI        │
+                    └──────────┬──────────┘
+                               │ HTTP
+                               ▼
+                    ┌─────────────────────┐
+                    │   FastAPI Backend   │
+                    └──────────┬──────────┘
+                               │
+              ┌────────────────┼────────────────┐
+              ▼                ▼                ▼
+       ┌─────────────┐  ┌─────────────┐  ┌─────────────┐
+       │ PDF Text    │  │    Topic    │  │ Study Plan  │
+       │ Extraction  │  │  Detection  │  │ & Quiz      │
+       └─────────────┘  └──────┬──────┘  └──────┬──────┘
+                                │                │
+                                └───────┬────────┘
+                                        ▼
+                              ┌──────────────────┐
+                              │ Ollama           │
+                              │ llama3.2:3b      │
+                              └──────────────────┘
+```
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+* React
+* Vite
+* JavaScript
+* CSS
+
+### Backend
+
+* Python
+* FastAPI
+* Uvicorn
+* pypdf
+
+### AI
+
+* Ollama
+* Llama 3.2 3B
+
+## 📁 Project Structure
+
+```text
+StudyFlow-AI/
+│
+├── backend/
+│   ├── main.py
+│   ├── ai_service.py
+│   ├── pdf_service.py
+│   ├── requirements.txt
+│   └── ...
+│
+├── frontend/
+│   ├── src/
+│   │   ├── App.jsx
+│   │   ├── App.css
+│   │   └── components/
+│   ├── package.json
+│   └── vite.config.js
+│
+├── sample_docs/
+│
+├── .gitignore
+└── README.md
+```
+
+## ⚙️ Setup
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/RishavPoray/StudyFlow-AI.git
+cd StudyFlow-AI
+```
+
+### 2. Set up Ollama
+
+Install Ollama from:
+
+https://ollama.com/
+
+Then download the required model:
+
+```bash
+ollama pull llama3.2:3b
+```
+
+Make sure Ollama is running before starting the backend.
+
+### 3. Set up the backend
+
+Open a terminal:
 
 ```bash
 cd backend
-python -m venv .venv
-
-# Windows
-.venv\Scripts\activate
-
-pip install -r requirements.txt
-uvicorn main:app --reload --port 8000
 ```
 
-### 2 — Frontend (new terminal)
+Create a virtual environment:
+
+```bash
+python -m venv .venv
+```
+
+Activate it on Windows:
+
+```powershell
+.venv\Scripts\Activate.ps1
+```
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Start the backend:
+
+```bash
+uvicorn main:app --reload
+```
+
+Backend will run at:
+
+```text
+http://127.0.0.1:8000
+```
+
+### 4. Start the frontend
+
+Open another terminal:
 
 ```bash
 cd frontend
@@ -32,31 +186,76 @@ npm install
 npm run dev
 ```
 
-Open **http://localhost:5173** in your browser.
+Open:
 
----
-
-## Features (Phase 1)
-- [x] PDF upload (drag-and-drop or click)
-- [x] Text extraction page-by-page (pypdf)
-- [x] Detected topic display (keyword scoring)
-- [x] Study plan generation (days × hours distribution)
-- [x] Multiple-choice quiz from extracted text
-- [x] Score + weak topic breakdown
-
-## Project Structure
-
+```text
+http://localhost:5173
 ```
-studyflow-ai/
-├── backend/
-│   ├── main.py            ← FastAPI app
-│   ├── requirements.txt
-│   └── uploads/           ← (unused, reserved for future file persistence)
-└── frontend/
-    ├── src/
-    │   ├── App.jsx        ← all UI components
-    │   └── index.css      ← design system
-    ├── index.html
-    ├── package.json
-    └── vite.config.js     ← proxies /api → localhost:8000
+
+## 🔄 How It Works
+
+```text
+1. Student uploads a PDF
+           ↓
+2. StudyFlow extracts the PDF text
+           ↓
+3. AI analyzes the current document
+           ↓
+4. Important topics are identified
+           ↓
+5. Student provides exam/study preferences
+           ↓
+6. Personalized study plan is generated
+           ↓
+7. AI generates a conceptual quiz
+           ↓
+8. Student completes the quiz
+           ↓
+9. Results are displayed
 ```
+
+## 🎯 Problem
+
+Students often have large amounts of study material but struggle to decide:
+
+* What topics should I study first?
+* How should I divide my time?
+* Have I understood the important concepts?
+* How can I practice after studying?
+
+StudyFlow AI brings these steps into one workflow.
+
+## 💡 Solution
+
+StudyFlow AI converts existing study material into an actionable learning workflow.
+
+Instead of manually reading through a large document and creating a study schedule and questions, students can upload their material and let the application organize the learning process.
+
+## 🔐 Privacy & Cost
+
+StudyFlow AI is designed around local processing.
+
+The AI model runs through Ollama on the user's machine, so no paid cloud AI API is required for the core AI functionality.
+
+## 🚀 Future Improvements
+
+Possible future additions include:
+
+* Flashcard generation
+* Progress tracking
+* More document formats
+* Automatic revision reminders
+* Learning analytics
+* More advanced question types
+* Cloud deployment
+
+## 👨‍💻 Author
+
+**Rishav Poray**
+
+GitHub:
+https://github.com/RishavPoray
+
+## 📄 License
+
+This project is currently intended as a hackathon/educational project.
